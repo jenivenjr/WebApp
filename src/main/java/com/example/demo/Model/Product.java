@@ -13,7 +13,6 @@ import java.util.Arrays;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Table(name = "products")
 public class Product {
     @Id
@@ -24,8 +23,7 @@ public class Product {
     private String prodDesc;
     private double prodPrice;
     @Lob
-    @Column(length = 150000000)
-    private String prodImage;
+    private Blob prodImage;
 
     public Product(Product prod){
         this.prodName = prodName;
@@ -39,7 +37,7 @@ public class Product {
         this.prodPrice = prodPrice;
     }
 
-    public Product(String prodName, String prodDesc, double prodPrice, String prodImage) {
+    public Product(String prodName, String prodDesc, double prodPrice,Blob prodImage) {
         this.prodName = prodName;
         this.prodDesc = prodDesc;
         this.prodPrice = prodPrice;
