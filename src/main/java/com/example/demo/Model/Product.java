@@ -24,6 +24,7 @@ public class Product {
     private String prodDesc;
     private double prodPrice;
     @Lob
+    @Column(length = 150000000)
     private String prodImage;
 
     public Product(Product prod){
@@ -36,6 +37,13 @@ public class Product {
         this.prodName = prodName;
         this.prodDesc = prodDesc;
         this.prodPrice = prodPrice;
+    }
+
+    public Product(String prodName, String prodDesc, double prodPrice, String prodImage) {
+        this.prodName = prodName;
+        this.prodDesc = prodDesc;
+        this.prodPrice = prodPrice;
+        this.prodImage = prodImage;
     }
 
     @Override

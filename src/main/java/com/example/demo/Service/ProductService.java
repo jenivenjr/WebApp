@@ -39,5 +39,6 @@ public class ProductService {
         }
         prod.setProdDesc(desc);
         prod.setProdPrice(price);
+        productRepository.save(prod);
     }
 }
