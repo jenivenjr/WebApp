@@ -3,11 +3,16 @@ package com.example.demo.controller;
 import com.example.demo.Model.Product;
 import com.example.demo.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RestController
@@ -15,15 +20,12 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private final ProductService productService;
+    @Value("${uploadDir}")
+    private String uploadFolder;
     @Autowired
-    private final ImageService imageService;
-
-    public ProductController(ProductService productService,ImageService imageService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.imageService = imageService;
-
     }
-//
 
     @RequestMapping(value = "/getproducts", method = RequestMethod.GET)
     public List<Product> getProducts(){
@@ -32,10 +34,12 @@ public class ProductController {
 
     @CrossOrigin
     @PostMapping("/uploadimage")
-    public String uploadImage(@ModelAttribute Product product,
-                             @RequestParam(value = "file")MultipartFile file) throws Exception {
-        Product prod = new Product(product);
-        productService.savetoDB(prod);
+    public String uploadImage(@RequestParam("name") String prodname,
+                              @RequestParam("desc")String proddesc,
+                              @RequestParam("price") double price,
+                              @RequestParam(value = "image")MultipartFile image) throws Exception {
+
+        productService.savetoDB(prodname,proddesc,price,image);
         return "done";
     }
 

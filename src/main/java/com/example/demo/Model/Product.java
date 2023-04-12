@@ -24,7 +24,7 @@ public class Product {
     private String prodDesc;
     private double prodPrice;
     @Lob
-    private Blob prodImage;
+    private String prodImage;
 
     public Product(Product prod){
         this.prodName = prodName;
@@ -32,11 +32,10 @@ public class Product {
         this.prodPrice = prodPrice;
     }
 
-    public Product(String prodName, String prodDesc, double prodPrice, Blob prodImage) {
+    public Product(String prodName, String prodDesc, double prodPrice) {
         this.prodName = prodName;
         this.prodDesc = prodDesc;
         this.prodPrice = prodPrice;
-        this.prodImage = prodImage;
     }
 
     @Override
