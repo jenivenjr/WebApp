@@ -1,13 +1,12 @@
 package com.example.demo.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Blob;
-import java.util.Arrays;
 
 @Entity
 @Data
@@ -23,7 +22,7 @@ public class Product {
     private String prodDesc;
     private double prodPrice;
     @Lob
-    private Blob prodImage;
+    private byte[] prodImage;
 
     public Product(Product prod){
         this.prodName = prodName;
@@ -37,7 +36,7 @@ public class Product {
         this.prodPrice = prodPrice;
     }
 
-    public Product(String prodName, String prodDesc, double prodPrice,Blob prodImage) {
+    public Product(String prodName, String prodDesc, double prodPrice,byte[] prodImage) {
         this.prodName = prodName;
         this.prodDesc = prodDesc;
         this.prodPrice = prodPrice;

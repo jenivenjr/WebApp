@@ -9,7 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.sql.rowset.serial.SerialBlob;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,22 +25,29 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public  List<Product> getProducts() {
+    public  List<Product> getProducts() throws SQLException {
         return productRepository.findAll();
     }
 
     public void savetoDB(String name,String desc,double price,MultipartFile file) throws IOException, SQLException {
-        Product prod = new Product();
+
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         if(fileName.contains("..")){
             System.out.println("Not valid");
         }
-        Blob blob = new SerialBlob(file.getBytes());
-        prod.setProdName(name);
-        prod.setProdImage(blob);
-        prod.setProdDesc(desc);
-        prod.setProdPrice(price);
+        InputStream inputStream = file.getInputStream();
+        ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
+
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer))!=1){
+            byteOutStream.write(buffer,0,bytesRead);
+        }
+        byte[] byteArray = byteOutStream.toByteArray();
+
+        Blob img = new SerialBlob(file.getBytes());
+        Product prod = new Product(name,desc,price,byteArray);
         productRepository.save(prod);
     }
 }

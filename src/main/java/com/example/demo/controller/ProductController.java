@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -26,9 +27,9 @@ public class ProductController {
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-
+    @CrossOrigin
     @RequestMapping(value = "/getproducts", method = RequestMethod.GET)
-    public List<Product> getProducts(){
+    public List<Product> getProducts() throws SQLException {
         return productService.getProducts();
     }
 
