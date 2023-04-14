@@ -41,7 +41,7 @@ public class ProductService {
 
         byte[] buffer = new byte[1024];
         int bytesRead;
-        while ((bytesRead = inputStream.read(buffer))!=1){
+        while ((bytesRead = inputStream.read(buffer))!=-1){
             byteOutStream.write(buffer,0,bytesRead);
         }
         byte[] byteArray = byteOutStream.toByteArray();
