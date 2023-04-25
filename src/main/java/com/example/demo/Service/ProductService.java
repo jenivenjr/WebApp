@@ -3,6 +3,8 @@ package com.example.demo.Service;
 import com.example.demo.Model.Product;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,23 +21,13 @@ import java.util.List;
 @Service
 public class ProductService {
     @Autowired
-    private final ProductRepository productRepository;
-
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private  ProductRepository productRepository;
 
     public  List<Product> getProducts() throws SQLException {
         return productRepository.findAll();
     }
 
-    public void savetoDB(String name,String desc,double price,MultipartFile file) throws IOException, SQLException {
-
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
-        if(fileName.contains("..")){
-            System.out.println("Not valid");
-        }
+    public ResponseEntity<String> savetoDB(String name,String desc,double price,MultipartFile file) throws IOException, SQLException {
         InputStream inputStream = file.getInputStream();
         ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
 
@@ -46,8 +38,9 @@ public class ProductService {
         }
         byte[] byteArray = byteOutStream.toByteArray();
 
-        Blob img = new SerialBlob(file.getBytes());
         Product prod = new Product(name,desc,price,byteArray);
         productRepository.save(prod);
+
+        return new ResponseEntity<>("saved", HttpStatus.OK);
     }
 }
